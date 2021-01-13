@@ -10,8 +10,6 @@
   - [Install](#install)
   - [How to Train](#how-to-train)
   - [How to Chat!](#how-to-chat)
-  - [Colab tutorials](#colab-tutorials)
-  - [TODO](#todo)
 
 <!-- /code_chunk_output -->
 
@@ -26,8 +24,6 @@
 ## Architecture
 
 학습 데이터에 적합하게 [Hello! GPT-2](https://arxiv.org/abs/1907.05774)를 응용, 아래와 같은 아키텍처를 설계함
-
-<img src="imgs/simsimi.png" alt="drawing" style="width:600px;"/>
 
 
 - 데이터의 Q 필드를 `<usr>`발화, A 필드를 `<sys>`발화 그리고 감정 레이블을 `<sent>`로 매핑해 `P(<sys>|<usr>, <sent>)`를 최대화 할 수 있는 모델을 학습한다. 감정 레이블은 [이곳](https://github.com/songys/Chatbot_data)의 정의를 따른다(일상다반사 0, 이별(부정) 1, 사랑(긍정) 2).
@@ -84,19 +80,3 @@ Simsimi > 돈을 많이 버는 것뿐이에요.
 user > 집은 너무 비싼거 같아요.
 Simsimi > 비싸다고 해서 다 좋은 건 아니에요.
 ```
-
-## Colab tutorials
-
-- PyTorch
-  - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/haven-jeon/KoGPT2-chatbot/blob/master/KoGPT2_chatbot_pytorch.ipynb)
-- MXNet
-  - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/haven-jeon/KoGPT2-chatbot/blob/master/KoGPT2_chatbot.ipynb)
-
-
-
-## TODO
-
-- ~~감정 정보를 조건으로 준 응답 생성~~
-- ~~PyTorch 버전 작업~~
-- 다양한 generation 방식 테스트
-
