@@ -32,10 +32,11 @@
 
 ```python
 # MXNet은 [링크](https://mxnet.apache.org/get_started?)를 참고하여 시스템에 맞는 버전으로 설치한다.
-pip3 install mxnet-cuXX
-pip3 install gluonnlp sentencepiece pandas torch transformers pytorch_lightning 
-pip3 install git+https://github.com/SKT-AI/KoGPT2#egg=kogpt2
+# cuda version이 11.0라면 pip install이 자동으로 안되므로 https://dist.mxnet.io/python에서 직접 다운받아 설치한다. 
 git clone https://github.com/L0Z1K/KoBART-chatbot.git
+pip install mxnet-cuXX
+pip install -r requirements.txt
+pip install git+https://github.com/SKT-AI/KoGPT2#egg=kogpt2
 ```
 
 ## How to Train
