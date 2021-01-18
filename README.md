@@ -45,6 +45,10 @@ pip install git+https://github.com/SKT-AI/KoGPT2#egg=kogpt2
 CUDA_VISIBLE_DEVICES=0 python train.py --gpus 1 --train --max_epochs 2
 ```
 
+- Train with custom file
+```bash
+CUDA_VISIBLE_DEVICES=0 python train.py --gpus 1 --train --max_epochs 2 --train_file /path/to/your/file
+```
 
 ## How to Chat!
 
