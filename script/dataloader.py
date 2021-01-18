@@ -5,7 +5,7 @@ import gluonnlp as nlp
 import pandas as pd
 import numpy as np
 
-class CharDataset(Dataset):
+class ChatDataset(Dataset):
     def __init__(self, chats, tok_path, vocab, max_len=32):
         self._data = chats
         self._tok_path = tok_path

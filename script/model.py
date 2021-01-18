@@ -1,4 +1,5 @@
 import argparse
+import os
 
 import torch
 from torch.utils.data import DataLoader, Dataset
@@ -9,7 +10,7 @@ from kogpt2.pytorch_kogpt2 import get_pytorch_kogpt2_model
 from kogpt2.utils import get_tokenizer
 from transformers.optimization import AdamW, get_cosine_schedule_with_warmup
 
-from dataloader import CharDataset
+from dataloader import ChatDataset
 
 class KoGPT2Chat(pl.LightningModule):
     def __init__(self, hparams, **kwargs):
@@ -43,7 +44,7 @@ class KoGPT2Chat(pl.LightningModule):
                             help='warmup ratio')
         parser.add_argument('--train_file',
                             type=str,
-                            default="Chatbotdata.csv",
+                            default="ChatbotData.csv",
                             help="train file path")
         return parser
 
@@ -91,7 +92,7 @@ class KoGPT2Chat(pl.LightningModule):
 
     def train_dataloader(self):
         data = pd.read_csv(self.hparams.train_file)
-        self.train_set = CharDataset(data, self.tok_path, self.vocab, max_len=self.hparams.max_len)
+        self.train_set = ChatDataset(data, self.tok_path, self.vocab, max_len=self.hparams.max_len)
         train_dataloader = DataLoader(
             self.train_set, batch_size=self.hparams.batch_size, num_workers=2,
             shuffle=True, collate_fn=self._collate_fn)
