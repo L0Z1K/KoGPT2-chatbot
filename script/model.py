@@ -41,6 +41,10 @@ class KoGPT2Chat(pl.LightningModule):
                             type=float,
                             default=0.1,
                             help='warmup ratio')
+        parser.add_argument('--train_file',
+                            type=str,
+                            default="Chatbotdata.csv",
+                            help="train file path")
         return parser
 
     def forward(self, inputs):
@@ -86,7 +90,7 @@ class KoGPT2Chat(pl.LightningModule):
         return torch.LongTensor(data), torch.LongTensor(mask), torch.LongTensor(label)
 
     def train_dataloader(self):
-        data = pd.read_csv('ChatbotData.csv')
+        data = pd.read_csv(self.hparams.train_file)
         self.train_set = CharDataset(data, self.tok_path, self.vocab, max_len=self.hparams.max_len)
         train_dataloader = DataLoader(
             self.train_set, batch_size=self.hparams.batch_size, num_workers=2,
