@@ -42,19 +42,19 @@ pip install git+https://github.com/SKT-AI/KoGPT2#egg=kogpt2
 ## How to Train
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python train.py --gpus 1 --train --max_epochs 2
+CUDA_VISIBLE_DEVICES=0 python script/train.py --gpus 1 --train --max_epochs 2
 ```
 
 - Train with custom file
 ```bash
-CUDA_VISIBLE_DEVICES=0 python train.py --gpus 1 --train --max_epochs 2 --train_file /path/to/your/file
+CUDA_VISIBLE_DEVICES=0 python script/train.py --gpus 1 --train --max_epochs 2 --train_file /path/to/your/file
 ```
 
 ## How to Chat!
 
 ```bash
 # CUDA_VISIBLE_DEVICES=0 python train.py --chat
-CUDA_VISIBLE_DEVICES=0 python train.py --gpus 1 --chat
+CUDA_VISIBLE_DEVICES=0 python script/train.py --gpus 1 --chat
 user > 방가워용.
 Simsimi > 저도요.
 
