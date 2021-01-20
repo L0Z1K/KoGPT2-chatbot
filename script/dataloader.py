@@ -34,12 +34,9 @@ class ChatDataset(Dataset):
         turn = self._data.iloc[idx]
         q = turn['Q']
         a = turn['A']
-        sentiment = str(turn['label'])
         q_toked = [
             self.q_token,
         ] + self.tokenizer(q) + [
-            self.eos,
-        ] + [self.sent_token] + self.tokenizer(sentiment) + [
             self.eos,
         ]
         q_len = len(q_toked)
