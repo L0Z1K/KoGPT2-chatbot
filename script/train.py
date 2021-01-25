@@ -55,5 +55,6 @@ if __name__ == "__main__":
         trainer.fit(model)
         logging.info('best model path {}'.format(checkpoint_callback.best_model_path))
     if args.chat:
+        logger.setLevel(logging.ERROR)
         model = KoGPT2Chat.load_from_checkpoint(args.model_params)
         model.chat()

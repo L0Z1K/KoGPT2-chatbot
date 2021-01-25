@@ -13,7 +13,6 @@ class ChatDataset(Dataset):
         self.first = True
         self.q_token = '<usr>'
         self.a_token = '<sys>'
-        self.sent_token = '<unused1>'
         self.bos = '<s>'
         self.eos = '</s>'
         self.maskt = '<unused0>'
@@ -34,18 +33,11 @@ class ChatDataset(Dataset):
         turn = self._data.iloc[idx]
         q = turn['Q']
         a = turn['A']
-        q_toked = [
-            self.q_token,
-        ] + self.tokenizer(q) + [
-            self.eos,
-        ]
+        q_toked = [ self.q_token ] + self.tokenizer(q) + [ self.eos ]
         q_len = len(q_toked)
-        a_toked = [
-            self.a_token,
-        ] + self.tokenizer(a) + [
-            self.eos,
-        ]
+        a_toked = [ self.a_token] + self.tokenizer(a) + [ self.eos ]
         a_len = len(a_toked)
+
         if q_len + a_len > self.max_len:
             a_len = self.max_len - q_len
             if a_len <= 0:
@@ -57,9 +49,7 @@ class ChatDataset(Dataset):
             a_len = len(a_toked)
             assert a_len == len(a_toked), f'{a_len} ==? {len(a_toked)}'
         # [mask, mask, ...., mask, ..., <bos>,..A.. <eos>, <pad>....]
-        labels = [
-            self.maskt,
-        ] * q_len + a_toked[1:]
+        labels = [ self.maskt ] * q_len + a_toked[1:]
         if self.first:
             logging.info("contexts : {}".format(q))
             logging.info("toked ctx: {}".format(q_toked))

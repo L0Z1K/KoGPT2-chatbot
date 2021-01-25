@@ -50,7 +50,7 @@ class KoGPT2Chat(pl.LightningModule):
 
     def forward(self, inputs):
         # (batch, seq_len, hiddens)
-        output, _ = self.kogpt2(inputs)
+        output = self.kogpt2(inputs)[0]
         return output
 
     def training_step(self, batch, batch_idx):
@@ -94,35 +94,35 @@ class KoGPT2Chat(pl.LightningModule):
         data = pd.read_csv(self.hparams.train_file)
         self.train_set = ChatDataset(data, self.tok_path, self.vocab, max_len=self.hparams.max_len)
         train_dataloader = DataLoader(
-            self.train_set, batch_size=self.hparams.batch_size, num_workers=2,
+            self.train_set, batch_size=self.hparams.batch_size, num_workers=5,
             shuffle=True, collate_fn=self._collate_fn)
         return train_dataloader
 
-    def chat(self, sent='0'):
-        self.tok_path
+    def chat(self):
         tok = SentencepieceTokenizer(self.tok_path, num_best=0, alpha=0)
-        sent_tokens = tok(sent)
         with torch.no_grad():
             while 1:
-                q = input('user > ').strip()
+                q = input('Q: ').strip()
                 if q == 'quit':
                     break
                 q_tok = tok(q)
-                a = ''
-                a_tok = []
-                while 1:
-                    input_ids = torch.LongTensor([
-                        self.vocab['<usr>']] + self.vocab[q_tok] +
-                        self.vocab['</s>', '<unused1>'] + self.vocab[sent_tokens] +
-                        self.vocab['</s>', '<sys>'] +
-                        self.vocab[a_tok]).unsqueeze(dim=0)
-                    pred = self(input_ids)
-                    gen = self.vocab.to_tokens(
-                        torch.argmax(
-                            pred,
-                            dim=-1).squeeze().numpy().tolist())[-1]
-                    if gen == '</s>':
-                        break
-                    a += gen.replace('▁', ' ')
-                    a_tok = tok(a)
-                print("Simsimi > {}".format(a.strip()))
+
+                input_ids = torch.LongTensor(
+                        [self.vocab['<usr>']] + self.vocab[q_tok] +
+                        self.vocab['</s>', '<sys>']
+                        ).unsqueeze(dim=0)
+                
+                gen = self.kogpt2.generate(input_ids,
+                                           num_beams=5,
+                                           max_length=32,
+                                           no_repeat_ngram_size=2,
+                                           bad_words_ids=[[47437]]
+                                           )
+                gen = self.vocab.to_tokens(gen.squeeze().tolist())
+                
+                answer = ''.join(g for g in gen)
+                answer = answer[answer.find('<sys>')+5:]
+                answer = answer[:answer.find('</s>')]
+                answer = answer.replace('▁', ' ')
+
+                print("A: {}".format(answer.strip()))
