@@ -13,11 +13,6 @@ parser.add_argument('--chat',
                     default=False,
                     help='response generation on given user input')
 
-parser.add_argument('--sentiment',
-                    type=str,
-                    default='0',
-                    help='sentiment for system. 0 is neutral, 1 is negative, 2 is positive.')
-
 parser.add_argument('--model_params',
                     type=str,
                     default='model_chp/model_last.ckpt',
@@ -55,6 +50,5 @@ if __name__ == "__main__":
         trainer.fit(model)
         logging.info('best model path {}'.format(checkpoint_callback.best_model_path))
     if args.chat:
-        logger.setLevel(logging.ERROR)
         model = KoGPT2Chat.load_from_checkpoint(args.model_params)
         model.chat()
