@@ -114,7 +114,7 @@ class KoGPT2Chat(pl.LightningModule):
                 
                 gen = self.kogpt2.generate(input_ids,
                                            num_beams=5,
-                                           max_length=32,
+                                           max_length=self.hparams.max_len,
                                            no_repeat_ngram_size=2,
                                            bad_words_ids=[[47437]]
                                            )
